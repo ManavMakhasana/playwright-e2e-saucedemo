@@ -1,0 +1,27 @@
+import { Page, Locator } from '@playwright/test';
+
+export class LoginPage {
+    readonly page: Page;
+    readonly usernameInput: Locator;
+    readonly passwordInput: Locator;
+    readonly loginButton: Locator;
+    readonly loginErrorMessage: Locator;
+
+    constructor(page: Page) {
+        this.page = page;
+        this.usernameInput = page.getByTestId("username");
+        this.passwordInput = page.getByTestId("password");
+        this.loginButton = page.getByTestId("login-button");
+        this.loginErrorMessage = page.getByTestId("error");
+    }
+
+    async goto(): Promise<void> {
+        await this.page.goto("https://www.saucedemo.com/");
+    }
+
+    async login(username: string, password = 'secret_sauce'): Promise<void> {
+        await this.usernameInput.fill(username);
+        await this.passwordInput.fill(password);
+        await this.loginButton.click();
+    }
+}
